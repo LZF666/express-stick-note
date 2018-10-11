@@ -14,15 +14,14 @@ Note.prototype = {
     ['#ea9b35', '#efb04e'], // headColor, containerColor
     ['#dd598b', '#e672a2'],
     ['#eee34b', '#f2eb67'],
-    ['#c24226', '#d15a39'],
-    ['#c1c341', '#d0d25c'],
+    ['#13c6a3', '#4eefac'],
     ['#3f78c3', '#5591d2']
   ],
 
   defaultOpts: {
     id: '', //Note的 id
     $ct: $('#content').length > 0 ? $('#content') : $('body'), //默认存放 Note 的容器
-    context: 'input here' //Note 的内容
+    context: '输入' //Note 的内容
   },
 
   initOpts: function (opts) {
@@ -41,7 +40,7 @@ Note.prototype = {
     this.$note.find('.note-ct').text(this.opts.context);
     this.$note.find('.username').text(this.opts.username);
     this.opts.$ct.append(this.$note);
-    if (!this.id) this.$note.css('bottom', '10px'); //新增放到右边
+    if (!this.id) this.$note.css('left', '-240px'); //新增放到右边
   },
 
   setStyle: function () {
@@ -73,16 +72,18 @@ Note.prototype = {
 
     //contenteditable没有 change 事件，所有这里做了模拟通过判断元素内容变动，执行 save
     $noteCt.on('focus', function () {
-      if ($noteCt.html() == 'input here') $noteCt.html('');
+      if ($noteCt.html() == '输入') $noteCt.html('');
       $noteCt.data('before', $noteCt.html());
     }).on('blur paste', function () {
       if ($noteCt.data('before') != $noteCt.html()) {
         $noteCt.data('before', $noteCt.html());
         self.setLayout();
+        console.log('self.id', self.id)
         if (self.id) {
           self.edit($noteCt.html())
         } else {
           self.add($noteCt.html())
+          //window.location.reload()
         }
       }
     });
@@ -113,23 +114,25 @@ Note.prototype = {
       id: this.id,
       note: msg
     }).done(function (ret) {
+      console.log('1')
       if (ret.status === 0) {
-        Toast('update success');
+        Toast('编辑成功');
       } else {
+        console.log('2')
         Toast(ret.errorMsg);
       }
     })
   },
 
   add: function (msg) {
-
     var self = this;
     $.post('/api/notes/add', {
         note: msg
       })
       .done(function (ret) {
         if (ret.status === 0) {
-          Toast('add success');
+          self.id = ret.id;
+          Toast('添加成功');
         } else {
           self.$note.remove();
           Event.fire('waterfall')
@@ -146,7 +149,7 @@ Note.prototype = {
       })
       .done(function (ret) {
         if (ret.status === 0) {
-          Toast('delete success');
+          Toast('删除成功');
           self.$note.remove();
           Event.fire('waterfall')
         } else {

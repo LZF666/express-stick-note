@@ -1,71 +1,113 @@
 var express = require('express');
 var router = express.Router();
-var Note = require('../model/note');
+var Note = require('../model/note').Note;
 
-/* 获取所有的 notes */
-
+/* GET users listing. */
 router.get('/notes', function (req, res, next) {
-
-  Note.findAll({
+  var query = {
     raw: true
-  }).then(function (notes) {
-    console.log("notte")
+  }
+  if (req.session.user) {
+    query.where = {
+      uid: req.session.user.id
+    }
+  }
+
+
+  //  前端不传任何东西，返回note的数据
+  Note.findAll(query).then(function (notes) {
     res.send({
       status: 0,
       data: notes
     })
   })
-
-
 });
 
-/*新增note*/
 router.post('/notes/add', function (req, res, next) {
 
-  var note = req.body.note;
-  Note.create({
-    text: note
-  }).then(function () {
-    res.send({
-      status: 0
+  if (!req.session.user) {
+    return res.send({
+      status: 1,
+      errorMsg: "请先登录"
     })
-  }).catch(function () {
+  }
+  if (!req.body.note) {
+    return res.send({
+      status: 2,
+      errorMsg: '内容不能为空'
+    });
+  }
+  var uid = req.session.user.id
+  var notes = req.body.note
+  Note.create({
+    text: notes,
+    uid: uid
+  }).then((notes) => {
+    res.send({
+      status: 0,
+      id: notes.id
+    })
+  }).catch(() => {
     res.send({
       status: 1,
-      errorMsg: '数据库出错'
+      errorMsg: "数据库出错lalala"
     })
   })
-  console.log('add...', note)
+
 })
 
-/*修改note*/
 router.post('/notes/edit', function (req, res, next) {
+  if (!req.session.user) {
+    return res.send({
+      status: 1,
+      errorMsg: "请先登录"
+    })
+  }
+
+  var uid = req.session.user.id
   Note.update({
     text: req.body.note
   }, {
     where: {
-      id: req.body.id
+      id: req.body.id,
+      uid: uid
     }
   }).then(function () {
-    console.log(arguments)
     res.send({
       status: 0
     })
+  }).catch(() => {
+    res.send({
+      status: 1,
+      errorMsg: "数据库出错"
+    })
   })
+
 })
 
-/*删除note*/
 router.post('/notes/delete', function (req, res, next) {
+  if (!req.session.user) {
+    return res.send({
+      status: 1,
+      errorMsg: "请先登录"
+    })
+  }
+  var uid = req.session.user.id
   Note.destroy({
     where: {
-      id: req.body.id
+      id: req.body.id,
+      uid: uid
     }
-  }).then(function () {
+  }).then(() => {
     res.send({
       status: 0
     })
+  }).catch(() => {
+    res.send({
+      status: 1,
+      errorMsg: "数据库出错"
+    })
   })
 })
-
 
 module.exports = router;

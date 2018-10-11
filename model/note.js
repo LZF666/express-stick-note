@@ -7,17 +7,23 @@ const sequelize = new Sequelize(undefined, undefined, undefined, {
   storage: path.join(__dirname, '../database/database.sqlite')
 });
 
-//1 hello 22222 33333 
+//1 hello user-name 22222 33333 
 
 var Note = sequelize.define('note', {
   text: {
     type: Sequelize.STRING
+  },
+  uid: {
+    type: Sequelize.STRING
   }
 });
-
+// Note.sync()
+// // 初始化
+// Note.drop({force:true})
+// Note.drop();
 // Note.sync().then(function () {
 //   Note.create({
-//     text: 'hello liu'
+//     text: '这是一个简单的便利贴应用。'
 //   })
 // }).then(function () {
 //   Note.findAll({
@@ -28,17 +34,14 @@ var Note = sequelize.define('note', {
 // })
 
 
-
+// 测试从数据库中获取数据
 // Note.findAll({
-//   raw: true,
-//   where: {
-//     id: 2
-//   }
+//   raw: true
 // }).then(function (notes) {
 //   console.log(notes)
 // })
 
-// 测试是否连接上了数据库
+//测试是否连接上了数据库
 // sequelize
 //   .authenticate()
 //   .then(function (err) {
@@ -47,4 +50,4 @@ var Note = sequelize.define('note', {
 //   .catch(function (err) {
 //     console.log('Unable to connect to the database:', err);
 //   });
-module.exports = Note;
+module.exports.Note = Note;
