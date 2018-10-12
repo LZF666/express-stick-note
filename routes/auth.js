@@ -20,7 +20,7 @@ passport.deserializeUser(function (obj, done) {
 passport.use(new GitHubStrategy({
     clientID: 'f5833e3293aa2eba9a08',
     clientSecret: '0dbdd85231b66dc9688e263009780ca97b0a8602',
-    callbackURL: "http://localhost:3000/auth/github/callback"
+    callbackURL: "http://liuzifu.top/auth/github/callback"
   },
   function (accessToken, refreshToken, profile, done) {
     // User.findOrCreate({ githubId: profile.id }, function (err, user) {
