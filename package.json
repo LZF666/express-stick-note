@@ -4,30 +4,29 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "webpack": "webpack --config ./src/webpack.config.js",
-    "watch": "onchange 'src/**/*.js' 'src/**/*.less' -- npm run webpack"
+    "webpack": "webpack --config=src/webpack.config.js",
+    "watch": "onchange \"src/**/*.js\" \"src/**/*.less\" -- npm run webpack "
   },
   "dependencies": {
-    "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "css-loader": "^1.0.0",
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
-    "express": "~4.15.5",
+    "express": "~4.16.0",
     "express-session": "^1.15.6",
+    "http-errors": "~1.6.2",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
     "morgan": "~1.9.0",
     "passport": "^0.4.0",
     "passport-github": "^1.1.0",
     "sequelize": "^4.39.0",
-    "serve-favicon": "~2.4.5",
-    "sqlite3": "^4.0.2",
     "style-loader": "^0.23.0"
   },
   "devDependencies": {
-    "onchange": "^5.0.2",
+    "electron-rebuild": "^1.8.2",
+    "onchange": "^4.1.0",
     "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.2"
+    "webpack-command": "^0.4.1"
   }
 }

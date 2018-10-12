@@ -31,18 +31,14 @@ router.post('/notes/add', function (req, res, next) {
       errorMsg: "请先登录"
     })
   }
-  if (!req.body.note) {
-    return res.send({
-      status: 2,
-      errorMsg: '内容不能为空'
-    });
-  }
+
   var uid = req.session.user.id
   var notes = req.body.note
   Note.create({
     text: notes,
     uid: uid
   }).then((notes) => {
+
     res.send({
       status: 0,
       id: notes.id
@@ -50,7 +46,7 @@ router.post('/notes/add', function (req, res, next) {
   }).catch(() => {
     res.send({
       status: 1,
-      errorMsg: "数据库出错lalala"
+      errorMsg: "数据库出错"
     })
   })
 

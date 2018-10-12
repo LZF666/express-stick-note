@@ -1,44 +1,42 @@
-var EventCenter = (function () {
 
-  var events = {};
+  var EventCenter = (function(){
 
-  function on(evt, handler) {
-    events[evt] = events[evt] || [];
+    var events = {
+      //evt:[fn1,fn2,fn3]
+    };
 
-    events[evt].push({
-      handler: handler
-    });
-  }
+    function on(evt, handler){
+      events[evt] = events[evt] || []; 
 
-  function fire(evt, args) {
-    if (!events[evt]) {
-      return;
-    }
-    for (var i = 0; i < events[evt].length; i++) {
-      events[evt][i].handler(args);
+      events[evt].push({
+        handler: handler
+      });
     }
 
-  }
+    function fire(evt, args){
+      if(!events[evt]){
+        return;
+      }
+      for(var i=0; i<events[evt].length; i++){
+        events[evt][i].handler(args);
+      }
+      
+    }
 
-  return {
-    on: on,
-    fire: fire
-  }
-})();
+    return {
+        on: on,
+        fire: fire
+    }
+  })();
 
-module.exports = EventCenter;
+  module.exports = EventCenter;
 
+  // EventCenter.on('text-change', function(data){
+  //  console.log(data);
+  // });
+  
+  // EventCenter.on('text-change', function(data){
+  //  alert(1);
+  // });
 
-
-
-// on 用来监听事件
-// EventCenter.on('text-change', function(data){
-//  console.log(data);
-// });
-
-// EventCenter.on('text-change', function(data){
-//  alert(1);
-// });
-
-// fire 用来销毁这个事件
-// EventCenter.fire('text-change', 100);
+  // EventCenter.fire('text-change', 100);

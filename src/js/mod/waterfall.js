@@ -1,20 +1,22 @@
-var WaterFall = (function () {
+
+var WaterFall = (function(){
   var $ct;
   var $items;
 
-  function render($c) {
+  function render($c){
     $ct = $c;
     $items = $ct.children();
+    console.log($items)
 
     var nodeWidth = $items.outerWidth(true),
-      colNum = parseInt($(window).width() / nodeWidth),
+      colNum = parseInt($ct.width()/nodeWidth)+1,
       colSumHeight = [];
 
-    for (var i = 0; i < colNum; i++) {
+    for(var i = 0; i<colNum;i++){
       colSumHeight.push(0);
     }
 
-    $items.each(function () {
+    $items.each(function(){
       var $cur = $(this);
 
       //colSumHeight = [100, 250, 80, 200]
@@ -22,23 +24,24 @@ var WaterFall = (function () {
       var idx = 0,
         minSumHeight = colSumHeight[0];
 
-      for (var i = 0; i < colSumHeight.length; i++) {
-        if (colSumHeight[i] < minSumHeight) {
+      for(var i=0;i<colSumHeight.length; i++){
+        if(colSumHeight[i] < minSumHeight){
           idx = i;
           minSumHeight = colSumHeight[i];
         }
       }
-
+      
       $cur.css({
-        left: nodeWidth * idx,
+        left: nodeWidth*idx,
         top: minSumHeight
       });
       colSumHeight[idx] = $cur.outerHeight(true) + colSumHeight[idx];
+      
     });
   }
 
 
-  $(window).on('resize', function () {
+  $(window).on('resize', function(){
     render($ct);
   })
 
@@ -47,5 +50,6 @@ var WaterFall = (function () {
     init: render
   }
 })();
-// 使用方法 WterFall.init($('content'))
+
 module.exports = WaterFall
+

@@ -11,17 +11,20 @@ function Note(opts) {
 }
 Note.prototype = {
   colors: [
-    ['#ea9b35', '#efb04e'], // headColor, containerColor
+    ['#ea9b35', '#FFC771'], // headColor, containerColor
     ['#dd598b', '#e672a2'],
     ['#eee34b', '#f2eb67'],
+    ['#3FA6C3', '#6FEEEC'],
     ['#13c6a3', '#4eefac'],
-    ['#3f78c3', '#5591d2']
+    ['#3f78c3', '#5591d2'],
+    ['#DB1515', '#FF7171'],
+    ['#FFF12B', '#FAFAD2']
   ],
 
   defaultOpts: {
     id: '', //Note的 id
     $ct: $('#content').length > 0 ? $('#content') : $('body'), //默认存放 Note 的容器
-    context: '输入' //Note 的内容
+    context: 'input here' //Note 的内容
   },
 
   initOpts: function (opts) {
@@ -72,7 +75,7 @@ Note.prototype = {
 
     //contenteditable没有 change 事件，所有这里做了模拟通过判断元素内容变动，执行 save
     $noteCt.on('focus', function () {
-      if ($noteCt.html() == '输入') $noteCt.html('');
+      if ($noteCt.html() == 'input here') $noteCt.html('');
       $noteCt.data('before', $noteCt.html());
     }).on('blur paste', function () {
       if ($noteCt.data('before') != $noteCt.html()) {
